@@ -1,26 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { VehicleInfoScreen } from './components/VehicleInfoScreen';
+import vehicleInfosRaw from './data/VehicleInfo.json';
+import { VehicleInfo } from './types/vehicle-info';
 
-function App() {
+export function App() {
+  const vehicleInfos: readonly VehicleInfo[] = vehicleInfosRaw as readonly VehicleInfo[];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ height: '100vh' }}>
+      <VehicleInfoScreen
+        vehicleInfos={vehicleInfos}
+        onAddVehicle={() => {}}
+        onDeleteVehicles={(ids: readonly string[]) => {}}
+      />
     </div>
   );
 }
-
-export default App;
