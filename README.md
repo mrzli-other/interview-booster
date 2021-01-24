@@ -4,18 +4,20 @@
 
 #### Using Docker
 
-- install docker engine on your machine
-- navigate to `<project_root>/docker`
-- execute `bash dev-run.sh`
-- to run db migrations (create the table) and seed database, in `backend` folder run `yarn prisma migrate dev --preview-feature`
+- setup:
+  - install docker engine on your machine
+  - navigate to `<project_root>/docker`
+  - execute `bash dev-run.sh`
+  - to run db migrations (create the table) and seed database, in `backend` folder run `yarn prisma migrate dev --preview-feature`
     - if you get an error about not being able to reach the database, wait a bit to allow docker container to initialize
     - if prompted for migration name, put anything you want, for example `init`
-- to seed the db, in `backend` run `yarn prisma db seed --preview-feature` (this will take a while, almost 4 mins on my machine)
+  - to seed the db, in `backend` run `yarn prisma db seed --preview-feature` (this will take a while, almost 4 mins on my machine)
 
 
-- to stop the database execute `bash dev-stop` in `docker` folder
-- to delete the database you can simply delete `data/db-data` (it would be better if docker instance is stopped while doing this)
-- see `backend/.env` for db parameters if you want to connect to the database with some other tool
+- other:
+  - to stop the database execute `bash dev-stop` in `docker` folder
+  - to delete the database you can simply delete `data/db-data` (it would be better if docker instance is stopped while doing this)
+  - see `backend/.env` for db parameters if you want to connect to the database with some other tool
 
 #### Manually
 
