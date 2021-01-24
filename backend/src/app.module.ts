@@ -1,10 +1,18 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { VehicleInfoController } from './vehicle-info.controller';
+import { PrismaService } from './prisma.service';
+import { VehicleInfoService } from './vehicle-info.service';
+import { CustomParseIntPipe } from './pipes/custom-parse-int-pipe';
 
 @Module({
   imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [
+    VehicleInfoController
+  ],
+  providers: [
+    VehicleInfoService,
+    PrismaService,
+    CustomParseIntPipe
+  ],
 })
 export class AppModule {}

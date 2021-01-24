@@ -1,22 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Dialog, DialogActions,
   DialogTitle,
   TextField
 } from '@material-ui/core';
-import { AddVehicleInfoData } from '../types/vehicle-info';
+import { CreateVehicleInfoData } from '../types/vehicle-info';
 
 interface AddVehicleTypeDialogProps {
   readonly isOpen: boolean;
   readonly onClose: () => void;
-  readonly onAddVehicleType: (vehicleInfo: AddVehicleInfoData) => void;
+  readonly onAddVehicleType: (vehicleInfo: CreateVehicleInfoData) => void;
 }
+
+const DEFAULT_VALUES: CreateVehicleInfoData = { make: '', model: '', year: 2021 };
 
 export function AddVehicleTypeDialog(
   { isOpen, onClose, onAddVehicleType }: AddVehicleTypeDialogProps
 ): React.ReactElement {
-  const [vehicleInfo, setVehicleInfo] = useState<AddVehicleInfoData>({ make: '', model: '', year: 2021 });
+  const [vehicleInfo, setVehicleInfo] = useState<CreateVehicleInfoData>(DEFAULT_VALUES);
+
+  useEffect(
+    () => {
+      setVehicleInfo(DEFAULT_VALUES);
+    },
+    [isOpen]
+  );
 
   return (
     <Dialog
