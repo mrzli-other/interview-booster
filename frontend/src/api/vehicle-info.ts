@@ -2,36 +2,47 @@ import axios from 'axios';
 import {
   CreateVehicleInfoData, CreateVehicleInfoResult,
   DeleteVehicleInfosData,
-  VehicleInfo
+  VehicleInfo, VehicleInfoFilterData
 } from '../types/vehicle-info';
 
 const api = axios.create({
   baseURL: 'http://localhost:3001/api'
 });
 
-export async function getVehicleInfoCount(): Promise<number> {
-  const response = await api.get<number>('/vehicle-info/num-vehicle-infos');
+export async function getVehicleInfoCount(
+  filterData: VehicleInfoFilterData
+): Promise<number> {
+  const params = new URLSearchParams();
+  if (filterData.make) {
+    params.append('make', filterData.make);
+  }
+  if (filterData.model) {
+    params.append('model', filterData.model);
+  }
+  if (filterData.year) {
+    params.append('year', filterData.year.toString());
+  }
+
+  const response = await api.get<number>('/vehicle-info/num-vehicle-infos', { params });
   return response.data;
 }
 
 export async function getVehicleInfos(
   offset: number,
   limit: number,
-  make: string | undefined,
-  model: string | undefined,
-  year: number | undefined
+  filterData: VehicleInfoFilterData
 ): Promise<readonly VehicleInfo[]> {
   const params = new URLSearchParams();
   params.append('offset', offset.toString());
   params.append('limit', limit.toString());
-  if (make) {
-    params.append('make', make);
+  if (filterData.make) {
+    params.append('make', filterData.make);
   }
-  if (model) {
-    params.append('model', model);
+  if (filterData.model) {
+    params.append('model', filterData.model);
   }
-  if (year) {
-    params.append('year', year.toString());
+  if (filterData.year) {
+    params.append('year', filterData.year.toString());
   }
 
   const response = await api.get<readonly VehicleInfo[]>('/vehicle-info/vehicle-infos', { params });

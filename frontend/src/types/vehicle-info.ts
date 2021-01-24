@@ -15,3 +15,9 @@ export interface CreateVehicleInfoResult {
   readonly success: boolean;
   readonly errors: readonly string[];
 }
+
+export interface VehicleInfoFilterData {
+  readonly make: string | undefined;
+  readonly model: string | undefined;
+  readonly year: number | undefined;
+}

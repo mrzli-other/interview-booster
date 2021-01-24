@@ -23,8 +23,12 @@ export class VehicleInfoController {
   }
 
   @Get('num-vehicle-infos')
-  async getVehicleInfoCount(): Promise<number> {
-    return this.vehicleInfoService.count();
+  async getVehicleInfoCount(
+    @Query('make') make: string | undefined,
+    @Query('model') model: string | undefined,
+    @Query('year', CustomParseIntPipe) year: number | undefined
+  ): Promise<number> {
+    return this.vehicleInfoService.count({ make, model, year });
   }
 
   @Get('vehicle-infos')

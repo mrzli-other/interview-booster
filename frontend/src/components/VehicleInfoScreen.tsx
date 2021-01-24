@@ -1,5 +1,9 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { CreateVehicleInfoData, VehicleInfo } from '../types/vehicle-info';
+import {
+  CreateVehicleInfoData,
+  VehicleInfo,
+  VehicleInfoFilterData
+} from '../types/vehicle-info';
 import {
   Button,
   Checkbox,
@@ -20,6 +24,7 @@ import {
   createVehicleInfo
 } from '../api/vehicle-info';
 import { Alert, Pagination } from '@material-ui/lab';
+import { VehicleInfoFilter } from './VehicleInfoFilter';
 
 interface SnackbarData {
   readonly type: 'error' | 'success';
@@ -37,20 +42,17 @@ export function VehicleInfoScreen(): React.ReactElement {
   const [totalCount, setTotalCount] = useState<number>(0);
   const [vehicleInfos, setVehicleInfos] = useState<readonly VehicleInfo[]>([]);
 
+  const [filterData, setFilterData] = useState<VehicleInfoFilterData>({ make: undefined, model: undefined, year: undefined });
   const [snackbarData, setSnackbarData] = useState<SnackbarData | undefined>(undefined);
 
-  async function fetchVehicleInfoCount(): Promise<void> {
-    const count = await getVehicleInfoCount();
-    setTotalCount(count);
-  }
-
   async function fetchVehicleInfos(): Promise<void> {
+    const count = await getVehicleInfoCount(filterData);
+    setTotalCount(count);
+
     const vehicleInfos = await getVehicleInfos(
       page * rowsPerPage,
       rowsPerPage,
-      undefined,
-      undefined,
-      undefined
+      filterData
     );
     setVehicleInfos(vehicleInfos);
     setSelectedRows([]);
@@ -73,18 +75,10 @@ export function VehicleInfoScreen(): React.ReactElement {
 
   useEffect(
     () => {
-      fetchVehicleInfoCount();
-    },
-    // eslint-disable-next-line
-    []
-  );
-
-  useEffect(
-    () => {
       fetchVehicleInfos();
     },
     // eslint-disable-next-line
-    [page, rowsPerPage]
+    [filterData, page, rowsPerPage]
   );
 
   // function onChangePage(
@@ -104,7 +98,14 @@ export function VehicleInfoScreen(): React.ReactElement {
   return (
     <>
       <Paper
-        style={{ display: 'flex', flexDirection: 'column', maxHeight: '100%' }}>
+        style={{ display: 'flex', flexDirection: 'column', maxHeight: '100%' }}
+      >
+        <div style={{ flexShrink: 0 }}>
+          <VehicleInfoFilter onSearch={(filterData) => {
+            setFilterData(filterData);
+            setPage(0);
+          }}/>
+        </div>
         <TableContainer>
           <Table>
             <TableHead>
@@ -155,7 +156,6 @@ export function VehicleInfoScreen(): React.ReactElement {
             disabled={selectedRows.length === 0}
             onClick={async () => {
               await callDeleteVehicleInfos();
-              await fetchVehicleInfoCount();
               await fetchVehicleInfos();
             }}
           >
@@ -171,7 +171,6 @@ export function VehicleInfoScreen(): React.ReactElement {
           }}
           onAddVehicleType={async (newVehicleInfo) => {
             await callCreateVehicleInfo(newVehicleInfo);
-            await fetchVehicleInfoCount();
             await fetchVehicleInfos();
           }}
         />

@@ -10,8 +10,14 @@ export class VehicleInfoService {
   constructor(private prisma: PrismaService) {
   }
 
-  async count(): Promise<number> {
-    return this.prisma.vehicleInfo.count();
+  async count(vehicleInfoFilter: VehicleInfoFilter): Promise<number> {
+    return this.prisma.vehicleInfo.count({
+      where: {
+        make: { contains: vehicleInfoFilter.make, mode: 'insensitive' },
+        model: { contains: vehicleInfoFilter.model, mode: 'insensitive' },
+        year: { equals: vehicleInfoFilter.year }
+      }
+    });
   }
 
   async vehicleInfos(
