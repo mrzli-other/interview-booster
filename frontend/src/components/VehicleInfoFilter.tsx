@@ -19,7 +19,7 @@ export function VehicleInfoFilter(
         style={{ marginRight: 15 }}
         label={'Make'}
         type={'search'}
-        value={make ?? null}
+        value={make ?? ''}
         onChange={(event) => {
           const value = event.target.value;
           setMake(value ? value.toUpperCase() : undefined);
@@ -30,7 +30,7 @@ export function VehicleInfoFilter(
         style={{ marginRight: 15 }}
         label={'Model'}
         type={'search'}
-        value={model ?? null}
+        value={model ?? ''}
         onChange={(event) => {
           const value = event.target.value;
           setModel(value ? value.toUpperCase() : undefined);
@@ -41,7 +41,7 @@ export function VehicleInfoFilter(
         style={{ marginRight: 15 }}
         label={'Year'}
         type={'search'}
-        value={year ?? null}
+        value={year ?? ''}
         onChange={(event) => {
           const value = event.target.value;
           const numValue = /^\d+$/.test(value) ? Number.parseInt(value) : undefined;
